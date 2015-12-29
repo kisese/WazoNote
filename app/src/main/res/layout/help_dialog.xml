@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    >
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/reg_layout"
+    >
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#F08080"
+        android:text="Help"
+        android:textColor="#FFFFFF"
+        android:gravity="center"
+        android:textSize="20dp"
+        />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Wazo Note is a simple notes app that will help you save, backup and secure your notes.
+
+Regards. brayokisese@gmail.com
+"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:textColor="#808080"
+        android:textStyle="normal"
+
+        />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="
+The My Notes page will provide you with the backup option from the Action Bar along with displaying your saved notes .To Edit a Note, open it from the my notes page and select the edit icon from the Action Bar
+"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:textColor="#808080"
+            android:textStyle="normal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="
+Backups will be in form of .txt files and they will be stored in your SD Cards DOWNLOADS folder
+From the main screen you can add various types of notes
+Some screens have action bar icons to perform various tasks."
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:textColor="#808080"
+            android:textStyle="normal" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="
+
+The same applies for performing a backup or deleting. For secure notes, the Secure Notes page will provide you with options to set a new password, reset or recover a password based on a security question
+With a password you can save secure notes which will only be accessible when you enter the password.
+"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:textColor="#808080"
+            android:textStyle="normal" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="For sticky notes, The Sticky Note page will add a sticky note which will be visible via a home screen widget
+(This may not work on some devices, if you have trouble with refreshing try creating a new widget)
+I do Hope you find the application useful.
+"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:textColor="#808080"
+            android:textStyle="normal" />
+
+</LinearLayout>
+</ScrollView>

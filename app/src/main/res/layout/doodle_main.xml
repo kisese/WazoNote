@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@drawable/grey_dots"
+    android:layout_marginBottom="10dp"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    >
+    <!-- Category-->
+    <TextView
+        android:id="@+id/my_notes_header"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Draw on the canvas below, use your device menu for more options"
+
+        android:gravity="center"
+        android:typeface="sans"
+        android:padding="0dp"
+        android:layout_marginTop="0dp"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/white_bg"
+        android:textSize="10dip"
+        />
+
+
+<com.kisese.brayo.wazonote.DoodleView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/doodleView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    />
+
+    <TextView
+
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:text="Tap the Back button or shake to save"
+        android:gravity="center"
+        android:typeface="sans"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="5dp"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/white_bg"
+
+        />
+</LinearLayout>
