@@ -56,7 +56,7 @@ public class RegistrationAdapter {
                 openHelper_ob.HEADLINE , openHelper_ob.DESCRIPTION};
         opnToWrite();
         Cursor c = database_ob.query(openHelper_ob.TABLE_NAME, cols, null,
-                null, null, null, null);
+                null, null, null,  openHelper_ob.LINK + " desc");
 
         return c;
 
@@ -67,7 +67,7 @@ public class RegistrationAdapter {
                 openHelper_ob.HEADLINE , openHelper_ob.DESCRIPTION};
         opnToWrite();
         Cursor c = database_ob.query(openHelper_ob.TABLE_NAME, cols,
-                openHelper_ob.KEY_ID + "=" + nameId, null, null, null, null);
+                openHelper_ob.KEY_ID + "=" + nameId, null, null, null,   openHelper_ob.LINK + " desc");
 
         return c;
 

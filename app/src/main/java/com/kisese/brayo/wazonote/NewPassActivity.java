@@ -4,12 +4,19 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.text.Html;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -22,6 +29,8 @@ public class NewPassActivity extends ActionBarActivity{
     private EditText sec_qstn;
     private EditText sec_answer;
     private Button set;
+    private TextView text;
+    private View layout;
     SharedPreferences new_password;
     SharedPreferences sec_question;
     SharedPreferences sec_ans;
@@ -38,12 +47,18 @@ public class NewPassActivity extends ActionBarActivity{
         sec_question = getSharedPreferences("question", MODE_PRIVATE);
         sec_ans = getSharedPreferences("answer", MODE_PRIVATE);
 
+        LayoutInflater inflater = getLayoutInflater();
+        layout = inflater.inflate(R.layout.toast_layout,
+                (ViewGroup) findViewById(R.id.toast_layout_root));
+        text = (TextView) layout.findViewById(R.id.text);
+
 
 try{
         if(sec_question.getString("sec_question", null).length() > 1) {
             Intent intent = new Intent(NewPassActivity.this, SecureActivity.class);
             NewPassActivity.this.startActivity(intent);
-            Toast.makeText(this, "A password has already been set", Toast.LENGTH_SHORT).show();
+            showToast("A password has already been set. Please login");
+            //Toast.makeText(this, "A password has already been set", Toast.LENGTH_SHORT).show();
             }
         }catch(NullPointerException e){
     e.printStackTrace();
@@ -58,6 +73,13 @@ try{
 
 
         setPass();
+
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#F5F5F5")));
+        getSupportActionBar().setTitle(Html.fromHtml("<font color=\"#696969\">" + getString(R.string.new_password) + "</font"));
+        getSupportActionBar().getThemedContext();
+        //getSupportActionBar().setIcon(new ColorDrawable(getResources().getColor(android.R.color.transparent)));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
     }
 
 
@@ -93,54 +115,32 @@ try{
 
                         alertYaSuccess();
                     }else{
-                        noTextAlert();
+                        showToast("Your security details are not valid, please try again");
                     }
                 }else{
-                    noMatchAlert();
+                    showToast("Your passwords don't match, please try again");
                 }
             }
         });
 
     }
 
-    @SuppressWarnings("deprecation")
-    private void noMatchAlert(){
-        final AlertDialog alertView = new AlertDialog.Builder(this).create();
-        alertView.setTitle("Ooops!!");
-        alertView.setMessage("Your passwords don't match, please try again");
-        alertView.setButton("OK", new DialogInterface.OnClickListener() {
+    public void showToast(String story_text){
+        text.setText(story_text);
 
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // TODO Auto-generated method stub
-
-                alertView.dismiss();
-            }
-        });
-        alertView.show();
+        Toast toast = new Toast(getApplicationContext());
+        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+        toast.setDuration(Toast.LENGTH_LONG);
+        toast.setView(layout);
+        toast.show();
     }
 
-    @SuppressWarnings("deprecation")
-    private void noTextAlert(){
-        final AlertDialog alertView = new AlertDialog.Builder(this).create();
-        alertView.setTitle("Ooops!!");
-        alertView.setMessage("Your security details are not valid, please try again");
-        alertView.setButton("OK", new DialogInterface.OnClickListener() {
 
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // TODO Auto-generated method stub
-
-                alertView.dismiss();
-            }
-        });
-        alertView.show();
-    }
 
     @SuppressWarnings("deprecation")
     private void alertYaSuccess(){
         final AlertDialog alertView = new AlertDialog.Builder(this).create();
-        alertView.setTitle("Success!!");
+       // alertView.setTitle("Success!!");
         alertView.setMessage("Your details are as follows \n password: " + a1 + "\n security question: " + a2 + "\n security answer: " + a3 + "\n " +
                 "Proceed to login to save your notes securely");
         alertView.setButton("OK", new DialogInterface.OnClickListener() {
@@ -148,7 +148,8 @@ try{
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // TODO Auto-generated method stub
-
+                Intent intent = new Intent(NewPassActivity.this, SecureActivity.class);
+                NewPassActivity.this.startActivity(intent);
                 alertView.dismiss();
             }
         });

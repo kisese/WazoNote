@@ -12,58 +12,43 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.util.Log;
 import android.widget.RemoteViews;
+import android.widget.Toast;
 
 public class MyWidgetProvider extends AppWidgetProvider {
 
 
-
+    String message;
     private static final String ACTION_CLICK = "ACTION_CLICK";
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager,
                          int[] appWidgetIds) {
 
-        String message;
-        String[] tags = new String[25];
 
         SharedPreferences sharedPref = context.getSharedPreferences("sticky", context.MODE_PRIVATE);
         message = sharedPref.getString("note", "");
 
-        tags = sharedPref.getAll().keySet().toArray(new String[0]);
-
-        //create a loop to read through keys
-        for(int i = 0; i < tags.length; i++){
-            message = sharedPref.getString(tags[i], null);
-            //should be an array of urls
-
-        }
-
-        // Get all ids
-        ComponentName thisWidget = new ComponentName(context,
-                MyWidgetProvider.class);
-        int[] allWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
-        for (int widgetId : allWidgetIds) {
-            // create some random data
-            int number = (new Random().nextInt(100));
-
-            RemoteViews remoteViews = new RemoteViews(context.getPackageName(),
+        for(int i=0; i<appWidgetIds.length; i++){
+            int currentWidgetId = appWidgetIds[i];
+            String url = "http://www.tutorialspoint.com";
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setData(Uri.parse(url));
+            PendingIntent pending = PendingIntent.getActivity(context, 0,
+                    intent, 0);
+            RemoteViews views = new RemoteViews(context.getPackageName(),
                     R.layout.widget_layout);
-            Log.w("WidgetExample", String.valueOf(number));
-            // Set the text
-            remoteViews.setTextViewText(R.id.update, String.valueOf("* ".concat(message)));
 
-            // Register an onClickListener
-            Intent intent = new Intent(context, MyWidgetProvider.class);
+            views.setTextViewText(R.id.update,message);
 
-            intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
 
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(context,
-                    0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-            remoteViews.setOnClickPendingIntent(R.id.update, pendingIntent);
-            appWidgetManager.updateAppWidget(widgetId, remoteViews);
+            appWidgetManager.updateAppWidget(currentWidgetId,views);
+          //  Toast.makeText(context, "widget added", Toast.LENGTH_SHORT).show();
         }
+
+
     }
 }

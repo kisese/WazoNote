@@ -1,7 +1,9 @@
 package com.kisese.brayo.wazonote;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +30,7 @@ public class CustomList extends ArrayAdapter<String> {
     @Override
     public View getView(int position, View view, ViewGroup parent) {
 
+
         notes = context.getSharedPreferences("secure", Context.MODE_PRIVATE);
 
         LayoutInflater inflater = context.getLayoutInflater();
@@ -39,7 +42,8 @@ public class CustomList extends ArrayAdapter<String> {
         TextView txtDescription = (TextView) rowView.findViewById(R.id.linksy);
         txtDescription.setText(notes.getString(headers[position], null));
 
-        return rowView;
-    }
 
-}
+            return rowView;
+        }
+
+    }

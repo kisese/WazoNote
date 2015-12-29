@@ -17,6 +17,12 @@
         />
 
     <item
+        android:id="@+id/action_share"
+        yourapp:showAsAction="always"
+        android:title="Share"
+        />
+
+    <item
         android:id="@+id/action_delete"
         yourapp:showAsAction="always"
         android:title="@string/delete"

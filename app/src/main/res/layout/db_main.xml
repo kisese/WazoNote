@@ -3,21 +3,36 @@
       android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" xmlns:tools="http://schemas.android.com/tools"
-    android:background="#FFFFFF"
+    android:background="#F5F5F5"
      >
+
+    <!-- Category-->
+    <TextView
+        android:id="@+id/my_notes_header"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="My Notes"
+        android:gravity="center"
+        android:typeface="sans"
+        android:padding="5dp"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/white_bg"
+        android:textSize="15dip"
+        />
         
 
     <ListView
-        android:id="@+id/lv_name"
+        android:id="@android:id/list"
          android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:divider="#FFFFFF"
+        android:divider="@android:color/transparent"
         android:dividerHeight="10dp"
+        android:layout_weight="1"
         android:listSelector="@drawable/list_selector"
         android:layout_marginTop="10dp"
     	android:layout_marginBottom="10dp"
-    	android:layout_marginLeft="10dp"
-    	android:layout_marginRight="10dp" 
+    	android:layout_marginLeft="25dp"
+    	android:layout_marginRight="25dp"
     />
 
 

@@ -8,13 +8,21 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
+import android.text.Html;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,8 +53,10 @@ public class EditActivity extends ActionBarActivity {
     String url_str;
     String head_str;
     private String LOG_TAG;
+    private TextView text;
+    private View layout;
 
-    String a;
+    String a, title, editee;
     String date;
     private String TAG;
 
@@ -59,6 +69,11 @@ public class EditActivity extends ActionBarActivity {
         link = (TextView) findViewById(R.id.read_link);
         headline = (TextView) findViewById(R.id.read_head);
         description = (TextView) findViewById(R.id.read_desc);
+
+        LayoutInflater inflater = getLayoutInflater();
+        layout = inflater.inflate(R.layout.toast_layout,
+                (ViewGroup) findViewById(R.id.toast_layout_root));
+        text = (TextView) layout.findViewById(R.id.text);
 
 
 
@@ -81,8 +96,18 @@ public class EditActivity extends ActionBarActivity {
                 url_str = c.getString(1);
                 head_str = c.getString(2);
 
+                title = c.getString(2);
+                editee = c.getString(3);
+
             } while (c.moveToNext());
         }
+
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#F08080")));
+       // getSupportActionBar().setTitle(Html.fromHtml("<font color=\"#696969\">" + getString(R.string.secure_main) + "</font"));
+        getSupportActionBar().getThemedContext();
+        //getSupportActionBar().setIcon(new ColorDrawable(getResources().getColor(android.R.color.transparent)));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
     }
 
     @Override
@@ -94,17 +119,30 @@ public class EditActivity extends ActionBarActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    public void showToast(String story_text){
+        text.setText(story_text);
+
+        Toast toast = new Toast(getApplicationContext());
+        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+        toast.setDuration(Toast.LENGTH_LONG);
+        toast.setView(layout);
+        toast.show();
+
+
+    }
+
     //on actionBar item clicked
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch(item.getItemId()){
             case R.id.action_edit:
-                Toast.makeText(this, "Preparing to Edit", Toast.LENGTH_SHORT).show();
+                //showToast("Preparing to Edit");
+                ///Toast.makeText(this, "Preparing to Edit", Toast.LENGTH_SHORT).show();
                 //add a function t create the dialog
                 Intent intent = new Intent(EditActivity.this, EditNoteActivity.class);
-                intent.putExtra("headline", headline.getText());
-                intent.putExtra("description", description.getText());
+                intent.putExtra("headline", title);
+                intent.putExtra("description", editee);
                 EditActivity.this.startActivity(intent);
                 regadapter.deletOneRecord(rowId);
                 finish();
@@ -116,9 +154,22 @@ public class EditActivity extends ActionBarActivity {
 
 
             case R.id.action_backup:
-                Toast.makeText(this, "Preparing to Backup", Toast.LENGTH_SHORT).show();
+                //showToast("Preparing to Backup");
+                //Toast.makeText(this, "Preparing to Backup", Toast.LENGTH_SHORT).show();
                 //doBackup();
                 alertYaBack();
+                break;
+
+            case R.id.action_share:
+
+
+                String shareBody = headline.getText().toString() + "\n \n" + description.getText().toString() + "\n \n----Shared by WazoNote";
+                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                sharingIntent.setType("text/plain");
+
+                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Share ");
+                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+                startActivity(Intent.createChooser(sharingIntent, "Share via"));
 
 
                 break;
@@ -211,7 +262,8 @@ public class EditActivity extends ActionBarActivity {
                 pw.close();
                 out.close();
 
-                Toast.makeText(this, "Backup Succesful", Toast.LENGTH_SHORT).show();
+                showToast("Backup Successful");
+              //  Toast.makeText(this, "Backup Succesful", Toast.LENGTH_SHORT).show();
 
 
             } catch (Exception e) {
@@ -249,7 +301,7 @@ public class EditActivity extends ActionBarActivity {
     @SuppressWarnings("deprecation")
     private void alertNoSpace(){
         final AlertDialog alertView = new AlertDialog.Builder(this).create();
-        alertView.setTitle("     Oops!!");
+        //alertView.setTitle("     Oops!!");
         alertView.setMessage("Looks like your SD card is out of space");
         alertView.setButton("OK", new DialogInterface.OnClickListener() {
 
@@ -265,7 +317,7 @@ public class EditActivity extends ActionBarActivity {
     @SuppressWarnings("deprecation")
     private void alertYaErrorTena(){
         final AlertDialog alertView = new AlertDialog.Builder(this).create();
-        alertView.setTitle("    Hold Up!!");
+       // alertView.setTitle("    Hold Up!!");
         alertView.setMessage("Are you sure you want to delete this note");
         alertView.setButton("Delete", new DialogInterface.OnClickListener() {
 
@@ -283,7 +335,7 @@ public class EditActivity extends ActionBarActivity {
     @SuppressWarnings("deprecation")
     private void alertYaBack(){
         final AlertDialog alertView = new AlertDialog.Builder(this).create();
-        alertView.setTitle("    Hold Up!!");
+       // alertView.setTitle("    Hold Up!!");
         alertView.setMessage("Press Backup to backup this note, It will be stored in a backup folder in your SD cards DOWNLOAD folder");
         alertView.setButton("Backup", new DialogInterface.OnClickListener() {
 
@@ -301,7 +353,7 @@ public class EditActivity extends ActionBarActivity {
     @SuppressWarnings("deprecation")
     private void alertYaBackupFailed(){
         final AlertDialog alertView = new AlertDialog.Builder(this).create();
-        alertView.setTitle("    Hold Up!!");
+       // alertView.setTitle("    Hold Up!!");
         alertView.setMessage("Note backup failed, please try again");
         alertView.setButton("Ok", new DialogInterface.OnClickListener() {
 

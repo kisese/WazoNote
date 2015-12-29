@@ -1,33 +1,42 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:name="@+id/lay"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000"
+    android:background="#FFFFFF"
+    android:orientation="vertical"
+
     >
 
-    <EditText
-        android:id="@+id/password"
-        android:layout_width="240dp"
-        android:layout_height="40dp"
-        android:inputType="numberPassword"
-        android:ems="10"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:gravity="center"
-        android:maxLength="4"
-        android:background="@drawable/grey_bg"
-        />
-
     <TextView
+        android:gravity="center"
+        android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Enter your password"
         android:id="@+id/textView"
         android:layout_above="@+id/password"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="105dp"
-        android:textColor="#ffffff"
-                />
+        android:layout_marginTop="85dp"
+        android:textColor="#808080"
+        />
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="240dp"
+        android:layout_height="40dp"
+        android:inputType="numberPassword"
+        android:hint="Type in your 4 digit password"
+        android:layout_gravity="center"
+        android:ems="10"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="25dp"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:maxLength="4"
+
+        />
+
+
 
     <Button
         android:layout_width="150dp"
@@ -36,9 +45,55 @@
         android:id="@+id/login"
         android:padding="5dp"
         android:layout_below="@+id/password"
+        android:layout_gravity="center"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="18dp"
+        android:textColor="#FFFFFF"
         android:background="@drawable/white_bg"
         />
 
-</RelativeLayout>
+    <TextView
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Set new Password"
+        android:id="@+id/set_password"
+        android:layout_above="@+id/password"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="65dp"
+        android:textColor="#F08080"
+        />
+
+
+    <TextView
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Forgot Password?"
+        android:id="@+id/recover_password"
+        android:layout_above="@+id/password"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
+        android:textColor="#F08080"
+        />
+
+
+    <TextView
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Reset Password"
+        android:id="@+id/reset_password"
+        android:layout_above="@+id/password"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
+        android:textColor="#F08080"
+        />
+
+
+
+
+</LinearLayout>

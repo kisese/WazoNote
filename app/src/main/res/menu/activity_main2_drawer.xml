@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_add"
+            android:icon="@drawable/ic_add"
+            android:title="Add Note" />
+        <item
+            android:id="@+id/nav_notes"
+            android:icon="@drawable/ic_my_notes"
+            android:title="My Notes" />
+        <item
+            android:id="@+id/nav_doodle"
+            android:icon="@drawable/ic_doodle"
+            android:title="Add Doodle" />
+        <item
+            android:id="@+id/nav_my_doodles"
+            android:icon="@drawable/doodle_showcase"
+            android:title="My Doodles" />
+
+        <item
+            android:id="@+id/nav_secure"
+            android:icon="@drawable/ic_secure"
+            android:title="Secure Note" />
+
+        <item
+            android:id="@+id/nav_sticky"
+            android:icon="@drawable/ic_sticky_note"
+            android:title="Sticky Note" />
+    </group>
+
+    <item android:title="Extras">
+        <menu>
+            <item
+                android:id="@+id/nav_sync"
+                android:icon="@android:drawable/ic_menu_revert"
+                android:title="Sync" />
+            <item
+                android:id="@+id/nav_help"
+                android:icon="@android:drawable/ic_menu_share"
+                android:title="Help" />
+            <item
+                android:id="@+id/nav_about"
+                android:icon="@android:drawable/ic_menu_info_details"
+                android:title="About" />
+        </menu>
+    </item>
+
+</menu>

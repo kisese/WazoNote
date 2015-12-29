@@ -20,7 +20,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Answer the security question to reset pasword:"
-                android:textColor="#32CD32"
+                android:textColor="#808080"
                 />
 
             <TextView
@@ -54,7 +54,7 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
-                android:textColor="#000000"
+                android:textColor="#FFFFFF"
                 android:textStyle="bold"
                 android:typeface="sans"
                 />
@@ -62,7 +62,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="NOTE: Your security password will be used to recover your password if you lose it. Please try to remember it."/>
+                android:text="NOTE: Your security question will be used to recover your password if you lose it. Please try to remember it."/>
 
         </LinearLayout>
 

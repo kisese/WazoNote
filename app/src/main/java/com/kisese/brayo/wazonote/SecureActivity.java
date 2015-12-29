@@ -9,11 +9,14 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.text.Html;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -28,11 +31,13 @@ public class SecureActivity extends ActionBarActivity {
 
     private EditText pass;
     private EditText sec_answer;
-    private TextView sec_qstn;
+    private TextView sec_qstn, set_password, reset_password, recover_password;
     private Button register;
     private Button login;
     private RelativeLayout layo;
     SharedPreferences checker;
+    private TextView text;
+    private View layout;
     SharedPreferences new_password;
     SharedPreferences sec_question;
     SharedPreferences sec_ans;
@@ -49,14 +54,62 @@ public class SecureActivity extends ActionBarActivity {
         pass = (EditText)findViewById(R.id.password);
         layo = (RelativeLayout)findViewById(R.id.lay);
         login = (Button)findViewById(R.id.login);
+        set_password = (TextView)findViewById(R.id.set_password);
+        reset_password = (TextView)findViewById(R.id.reset_password);
+        recover_password = (TextView)findViewById(R.id.recover_password);
 
         new_password = getSharedPreferences("password", MODE_PRIVATE);
         sec_question = getSharedPreferences("question", MODE_PRIVATE);
         sec_ans = getSharedPreferences("answer", MODE_PRIVATE);
 
+        LayoutInflater inflater = getLayoutInflater();
+        layout = inflater.inflate(R.layout.toast_layout,
+                (ViewGroup) findViewById(R.id.toast_layout_root));
+        text = (TextView) layout.findViewById(R.id.text);
+
+
 
         s = new_password.getString("password", null);
 
+        set_password.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SecureActivity.this, NewPassActivity.class);
+                SecureActivity.this.startActivity(intent);
+            }
+        });
+
+
+        reset_password.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                //showToast("Proceeding to reset password");
+               // Toast.makeText(getApplicationContext(), "Proceeding to reset password", Toast.LENGTH_SHORT).show();
+                Intent intentb = new Intent(SecureActivity.this, ResetActivity.class);
+                SecureActivity.this.startActivity(intentb);
+            }
+        });
+
+        recover_password.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+               // showToast("Proceeding to recover password");
+               // Toast.makeText(getApplicationContext(), "Proceeding to recover password", Toast.LENGTH_SHORT).show();
+                //add a function t create the dialog
+                Intent intenta = new Intent(SecureActivity.this, RecoveryActivity.class);
+                SecureActivity.this.startActivity(intenta);
+            }
+        });
+
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#F08080")));
+        getSupportActionBar().setTitle(Html.fromHtml("<font color=\"#696969\">" + getString(R.string.secure_main) + "</font"));
+        getSupportActionBar().getThemedContext();
+        //getSupportActionBar().setIcon(new ColorDrawable(getResources().getColor(android.R.color.transparent)));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
         //check if its the first run of the activity
 
         /*
@@ -76,6 +129,7 @@ public class SecureActivity extends ActionBarActivity {
             }
         });
 
+
     }
 
 
@@ -87,11 +141,13 @@ public class SecureActivity extends ActionBarActivity {
                 Intent intentc = new Intent(SecureActivity.this, SecureMain.class);
                 SecureActivity.this.startActivity(intentc);
             } else {
-                alertYaPassword();
+                showToast("Your login details are not valid, please try again");
+               // alertYaPassword();
             }
         }catch(NullPointerException e){
             e.printStackTrace();
-            alertYaEmpty();
+            showToast("No password has been set");
+            //alertYaEmpty();
         }
     }
 
@@ -99,41 +155,13 @@ public class SecureActivity extends ActionBarActivity {
         MenuInflater inflater = getMenuInflater();
         //inflater.notifyAll();
         //Inflate the ActionBar with this menu layout
-        inflater.inflate(R.menu.pass_main, menu);
+        //inflater.inflate(R.menu.main, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch(item.getItemId()){
-            case R.id.action_recover:
-
-
-
-                Toast.makeText(this, "Proceeding to recover password", Toast.LENGTH_SHORT).show();
-                //add a function t create the dialog
-                Intent intenta = new Intent(SecureActivity.this, RecoveryActivity.class);
-                SecureActivity.this.startActivity(intenta);
-                break;
-
-            case R.id.action_reset:
-
-                Toast.makeText(this, "Proceeding to reset password", Toast.LENGTH_SHORT).show();
-
-
-                Intent intentb = new Intent(SecureActivity.this, ResetActivity.class);
-                SecureActivity.this.startActivity(intentb);
-                break;
-
-            case R.id.action_add:
-                Intent intent = new Intent(SecureActivity.this, NewPassActivity.class);
-                SecureActivity.this.startActivity(intent);
-                break;
-
-            default:
-                break;
-        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -141,45 +169,21 @@ public class SecureActivity extends ActionBarActivity {
 
 
 
-    @SuppressWarnings("deprecation")
-    private void alertYaPassword(){
-        final AlertDialog alertView = new AlertDialog.Builder(this).create();
-        alertView.setTitle("Ooops!!");
-        alertView.setMessage("Your login details are not valid, please try again");
-        alertView.setButton("OK", new DialogInterface.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // TODO Auto-generated method stub
-
-                alertView.dismiss();
-            }
-        });
-        alertView.show();
-    }
-
-    @SuppressWarnings("deprecation")
-    private void alertYaEmpty(){
-        final AlertDialog alertView = new AlertDialog.Builder(this).create();
-        alertView.setTitle("Ooops!!");
-        alertView.setMessage("No password has been set");
-        alertView.setButton("OK", new DialogInterface.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // TODO Auto-generated method stub
-
-                alertView.dismiss();
-            }
-        });
-        alertView.show();
-    }
-
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(SecureActivity.this,MainActivity.class);
+        Intent intent = new Intent(SecureActivity.this,MainMenuActivity.class);
         SecureActivity.this.startActivity(intent);
         super.onBackPressed();
+    }
+
+    public void showToast(String story_text){
+        text.setText(story_text);
+
+        Toast toast = new Toast(getApplicationContext());
+        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+        toast.setDuration(Toast.LENGTH_LONG);
+        toast.setView(layout);
+        toast.show();
     }
 
 }

@@ -3,75 +3,85 @@ package com.kisese.brayo.wazonote;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
+import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
+import android.widget.ListView;
 
-import storage.MainActivityList;
+import storage.AndroidExplorer;
+import storage.MyListAdapter;
+import storage.RegistrationAdapter;
+import storage.RegistrationOpenHelper;
+
+public class MainActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
 
 
-public class MainActivity extends ActionBarActivity {
-
-    private Button newNote;
-    private Button myNotes;
-    private Button stickyNotes;
-    private Button secureNote;
+    AlertDialog myDialog;
+    View alertView;
+    private ListView notes_list;
+    int[] to = { R.id.linksy, R.id.headeline};
+    RegistrationAdapter adapter_ob;
+    RegistrationOpenHelper helper_ob;
+    String[] from = { helper_ob.LINK, helper_ob.HEADLINE};
+    SQLiteDatabase db_ob;
+    ListView nameList;
+    Cursor cursor;
+    private SharedPreferences notes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main2);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        newNote = (Button)findViewById(R.id.btn_new_note);
-        myNotes = (Button)findViewById(R.id.btn_my_notes);
-        stickyNotes = (Button)findViewById(R.id.btn_sticker);
-        secureNote = (Button)findViewById(R.id.btn_secure);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+        adapter_ob = new RegistrationAdapter(this);
+        notes_list = (ListView)findViewById(R.id.notes_list);
 
-        clickFunctions();
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        cursor = adapter_ob.queryName();
+        MyListAdapter materials = new MyListAdapter(this, R.layout.row, cursor, from, to);
+        notes_list.setAdapter(materials);
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
     }
 
-
-    public void clickFunctions(){
-        myNotes.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                //myNotes.setBackgroundResource(R.drawable.white_bg);
-                Intent noteList = new Intent(MainActivity.this, MainActivityList.class);
-                MainActivity.this.startActivity(noteList);
-                //myNotes.setBackgroundResource(R.drawable.blue_bg);
-            }
-        });
-
-        newNote.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent noteMpya = new Intent(MainActivity.this, AddNoteActivity.class);
-                MainActivity.this.startActivity(noteMpya);
-            }
-        });
-
-        stickyNotes.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent noteSticky = new Intent(MainActivity.this, StickyNoteActivity.class);
-                MainActivity.this.startActivity(noteSticky);
-            }
-        });
-
-        secureNote.setOnClickListener(new View.OnClickListener(){
-
-            @Override
-            public void onClick(View v) {
-                Intent noteSecure = new Intent(MainActivity.this, SecureActivity.class);
-                MainActivity.this.startActivity(noteSecure);
-            }
-        });
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     @Override
@@ -87,66 +97,91 @@ public class MainActivity extends ActionBarActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_help) {
-            alertYaHelp();
-           // return true;
-        }else if(id == R.id.action_about){
-            alertYaAbout();
-        }
 
+        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("deprecation")
-    private void alertYaHelp(){
-        final AlertDialog alertView = new AlertDialog.Builder(this).create();
-        alertView.setTitle("Help");
-        alertView.setMessage("* Wazo Note is a simple notes app that will help you save, backup and secure your notes\n\n"
-                +"* Backups will be in form of .txt files and they will be stored in your SD Cards DOWNLOADS folder\n\n" +
-                "* From the main screen you can add various types of notes \n\n" +
-                "* Some screens have actionbar icons to perform various tasks \n\n"+
-                "* IMPORTANT: \n\n" +
-                "* The My Notes page will provide you with the backup option from the Action Bar along with displaying your saved notes\n\n" +
-                "* To Edit a Note, open it from the my notes page and select the edit icon from the ActionBar \n\n" +
-                "* The same applies for performing a backup or deleting \n\n" +
-                "* For secure notes, the Secure Notes page will provide you with options to set anew password, reset or recover a password" +
-                 " based on a securit question \n\n" +
-                 "* With a password you can save secure notes which will only be accesible when you enter the password.\n\n" +
-                 "* For sticky notes, The Sticky Note page will add a sticky note which will be visible via a homescreen widget" +
-                        "(This may not wrk on some devices, if you have trouble with refreshing try creating a new widget)\n\n" +
-                  " I do Hope you find the application useful.\n\n Regards. brayokisese@gmail.com");
-        alertView.setButton("OK", new DialogInterface.OnClickListener() {
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
 
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // TODO Auto-generated method stub
+        if (id == R.id.nav_add) {
+            Intent addNote = new Intent(this, AddNoteActivity.class);
+            this.startActivity(addNote);
+        } else if (id == R.id.nav_doodle) {
+            Intent addDoodle = new Intent(this, Doodlz.class);
+            this.startActivity(addDoodle);
+        } else if (id == R.id.nav_my_doodles) {
+            Intent myDoodles = new Intent(this, MyDoodlesActivity.class);
+            this.startActivity(myDoodles);
+        } else if (id == R.id.nav_sticky) {
+            Intent stickyNote = new Intent(this, StickyNoteActivity.class);
+            this.startActivity(stickyNote);
+        } else if (id == R.id.nav_secure) {
+            Intent secureNote = new Intent(this, SecureActivity.class);
+            this.startActivity(secureNote);
+        } else if (id == R.id.nav_sync) {
+            Intent backups = new Intent(this, AndroidExplorer.class);
+            this.startActivity(backups);
+        }else if (id == R.id.nav_help) {
+            startHelpDialog();
+        }else if (id == R.id.nav_about) {
+            startAboutDialog();
+        }
 
-            
-
-                alertView.dismiss();
-            }
-        });
-        alertView.show();
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 
-    @SuppressWarnings("deprecation")
-    private void alertYaAbout(){
-        final AlertDialog alertView = new AlertDialog.Builder(this).create();
-        alertView.setTitle("Wazo Note");
-        alertView.setMessage("save, secure and backup your notes.\n\n" +
-                "brayokisese@gmail.com \n PurpleLabs");
-        alertView.setButton("OK", new DialogInterface.OnClickListener() {
+    public void startHelpDialog(){
 
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
+        alertView = inflater.inflate(R.layout.help_dialog, null);
+
+        builder.setView(alertView);
+
+
+        builder.setPositiveButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // TODO Auto-generated method stub
+            public void onClick(DialogInterface dialog, int id) {
+                //Add new Channel
 
-
-
-                alertView.dismiss();
             }
         });
-        alertView.show();
+
+
+        myDialog = builder.create();
+        myDialog.show();
+    }
+
+    public void startAboutDialog(){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
+        alertView = inflater.inflate(R.layout.about_dialog, null);
+
+        builder.setView(alertView);
+
+
+        builder.setPositiveButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                //Add new Channel
+
+            }
+        });
+
+
+        myDialog = builder.create();
+        myDialog.show();
     }
 }

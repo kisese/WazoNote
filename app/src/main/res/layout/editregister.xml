@@ -3,7 +3,6 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-
     android:background="#ffffff"
     android:id="@+id/web_list"
     android:listSelector="@drawable/list_selector"
@@ -28,7 +27,8 @@
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
         android:typeface="sans"
-        android:textSize="15dip"
+
+        android:textSize="18dip"
         android:textStyle="bold"/>
 
     <!-- Description ofthe category -->
@@ -47,7 +47,7 @@
         android:layout_marginBottom="5dp"
         android:layout_toRightOf="@+id/thumbnail"
         android:text="A short description of the category ..."
-         android:textColor="#00bfff"
+         android:textColor="#F08080"
          />
 
         <ScrollView
@@ -64,14 +64,19 @@
         android:layout_toRightOf="@+id/thumbnail"
         android:text="A short description of the category ..."
         android:textColor="#000000"
-        android:background="@drawable/text_bg_b"
+        android:background="#ffffff"
+        android:lineSpacingExtra="3dp"
         android:gravity="top"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
         android:editable="false"
         android:padding="5dp"
+        android:typeface="sans"
+        android:includeFontPadding="true"
+        android:inputType="textMultiLine|textLongMessage"
+        android:layout_weight="1"
          />
 </ScrollView>
     </LinearLayout>

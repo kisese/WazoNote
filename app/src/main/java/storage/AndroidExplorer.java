@@ -9,6 +9,8 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import android.app.AlertDialog;
@@ -18,13 +20,20 @@ import android.app.ListActivity;
 import android.content.DialogInterface;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import android.os.Environment;
+import android.support.v7.app.ActionBar;
+import android.text.Html;
 import android.view.View;
 
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import android.widget.TextView;
@@ -76,6 +85,9 @@ public class AndroidExplorer  extends ListActivity {
         }else {
             date = day + "/ " + month + "/ " + year + " - " + time + " : " + min  + " " + a;
         }
+
+
+
     }
 
     private void getDir(String dirPath)
@@ -107,13 +119,26 @@ public class AndroidExplorer  extends ListActivity {
                 }
             }
 
+
+
             ArrayAdapter<String> fileList =
                     new ArrayAdapter<String>(this, R.layout.row_b, item);
+
+            Collections.sort(item, String.CASE_INSENSITIVE_ORDER);
+
             setListAdapter(fileList);
+
+
         }catch (NullPointerException e){
             Toast.makeText(getApplicationContext(), "Looks like you dont have any backed up notes (SD CARD/download/wazo_note_download)", Toast.LENGTH_SHORT);
 
         }
+
+        LinearLayout sd = (LinearLayout)findViewById(R.id.sd_main);
+
+        Animation animation = AnimationUtils.loadAnimation(this,  R.anim.fade);
+        sd.startAnimation(animation);
+
     }
 
     @Override
@@ -176,8 +201,8 @@ public class AndroidExplorer  extends ListActivity {
     @SuppressWarnings("deprecation")
     private void alertYaSuccess(){
         final AlertDialog alertView = new AlertDialog.Builder(this).create();
-        alertView.setTitle("     Well Well Well!!");
-        alertView.setMessage("Please type in a title");
+        alertView.setTitle("Success");
+        alertView.setMessage("View your note in my Notes list");
         alertView.setButton("OK", new DialogInterface.OnClickListener() {
 
             @Override

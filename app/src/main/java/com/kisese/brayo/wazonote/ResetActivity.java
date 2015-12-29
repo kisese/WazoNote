@@ -4,9 +4,15 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.text.Html;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -21,6 +27,8 @@ public class ResetActivity extends ActionBarActivity{
     private Button check_pass;
     private TextView question;
     private EditText answer;
+    private TextView text;
+    private View layout;
     SharedPreferences new_password;
     SharedPreferences sec_question;
     SharedPreferences sec_ans;
@@ -38,16 +46,25 @@ public class ResetActivity extends ActionBarActivity{
         sec_ans = getSharedPreferences("answer", MODE_PRIVATE);
 
 
+
+        LayoutInflater inflater = getLayoutInflater();
+        layout = inflater.inflate(R.layout.toast_layout,
+                (ViewGroup) findViewById(R.id.toast_layout_root));
+        text = (TextView) layout.findViewById(R.id.text);
+
+
         String ques = sec_question.getString("sec_question", null);
 
 
         question.setText(ques);
 
         if(question.getText().toString().isEmpty()){
-            alertYaEmpty();
+            showToast("No password has been set");
+            //alertYaEmpty();
             Intent intent = new Intent(ResetActivity.this, SecureActivity.class);
             ResetActivity.this.startActivity(intent);
-            Toast.makeText(this, "No password has been set", Toast.LENGTH_SHORT).show();
+            showToast("No password has been set");
+           // Toast.makeText(this, "No password has been set", Toast.LENGTH_SHORT).show();
         }
 
 
@@ -60,9 +77,23 @@ public class ResetActivity extends ActionBarActivity{
         });
 
 
-
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#F5F5F5")));
+        getSupportActionBar().setTitle(Html.fromHtml("<font color=\"#696969\">" + getString(R.string.reset) + "</font"));
+        getSupportActionBar().getThemedContext();
+        //getSupportActionBar().setIcon(new ColorDrawable(getResources().getColor(android.R.color.transparent)));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
     }
 
+    public void showToast(String story_text){
+        text.setText(story_text);
+
+        Toast toast = new Toast(getApplicationContext());
+        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+        toast.setDuration(Toast.LENGTH_LONG);
+        toast.setView(layout);
+        toast.show();
+    }
     public void doCheck(){
         String an = sec_ans.getString("sec_answer", null);
 
@@ -79,17 +110,17 @@ public class ResetActivity extends ActionBarActivity{
             e2.commit();
             e3.commit();
 
-            alertYaSuccess();
+            showToast("Your password has been reset, please provide a new one");
 
         }else{
-            alertYaError();
+            showToast("Wrong answer, please try again");
         }
     }
 
     @SuppressWarnings("deprecation")
     private void alertYaError(){
         final AlertDialog alertView = new AlertDialog.Builder(this).create();
-        alertView.setTitle("Oops!!");
+       // alertView.setTitle("Oops!!");
         alertView.setMessage("Wrong answer, please try again");
         alertView.setButton("OK", new DialogInterface.OnClickListener() {
 
@@ -106,7 +137,7 @@ public class ResetActivity extends ActionBarActivity{
     @SuppressWarnings("deprecation")
     private void alertYaSuccess(){
         final AlertDialog alertView = new AlertDialog.Builder(this).create();
-        alertView.setTitle("Reset Succesful!!");
+       // alertView.setTitle("Reset Succesful!!");
         alertView.setMessage("Your password has been reset please provide a new one");
         alertView.setButton("OK", new DialogInterface.OnClickListener() {
 
@@ -124,7 +155,7 @@ public class ResetActivity extends ActionBarActivity{
     @SuppressWarnings("deprecation")
     private void alertYaEmpty(){
         final AlertDialog alertView = new AlertDialog.Builder(this).create();
-        alertView.setTitle("Ooops!!");
+        //alertView.setTitle("Ooops!!");
 
         alertView.setMessage("No password has been set");
         alertView.setButton("OK", new DialogInterface.OnClickListener() {
