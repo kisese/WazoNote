@@ -19,11 +19,11 @@ public class RegistrationActivity extends Activity {
 
     private SharedPreferences heads;
 
-    RegistrationAdapter adapter;
-    RegistrationOpenHelper helper;
+    NotesTableAdapter adapter;
+    NotesDBHelper helper;
     EditText fnameEdit, lnameEdit;
     Button submitBtn, resetBtn;
-    RegistrationOpenHelper helper_ob;
+    NotesDBHelper helper_ob;
     String temp = "";
     TextView tester;
 
@@ -51,7 +51,7 @@ public class RegistrationActivity extends Activity {
         preferencesEditor.putString(headlineValue, descriptionValue);
         preferencesEditor.commit();
 
-        adapter = new RegistrationAdapter(this);
+        adapter = new NotesTableAdapter(this);
 
         submitBtn.setOnClickListener(new OnClickListener() {
 
